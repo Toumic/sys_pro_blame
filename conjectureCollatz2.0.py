@@ -1,5 +1,6 @@
 # !/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# Conjecture-Collatz2.0
 # Produit le mardi 20 juin 2023
 
 from tkinter import *
@@ -15,7 +16,6 @@ tab_deux = []  # Liste_itérative[n *= 2] globale.
 dic_pairs = {}  # Dictionnaire des nombres pairs avec leurs localisations.
 dic_impairs = {}  # Dictionnaire des nombres impairs avec leurs localisations.
 dic_terme2, dic_terme3 = {}, {}
-# axes_global = {}  # Dictionnaire des dictionnaires
 
 
 def graphes(tab2, guide, nbr):
@@ -199,10 +199,11 @@ def graphes(tab2, guide, nbr):
         (lineno(), "dico_gen dg", dg, dico_gen[dg], "nb", nb, "rang_pai", rang_pai, max(rang_pai))
         if nb in dic_terme2.keys():  # dic_terme2 = Terminal | dic_pairs = Position
             lis_mul, pos_mul = dic_terme2[nb], list(dic_pairs[nb][0])
-            taux = str(nb / (lis_mul[2] / lis_mul[3]))
-            tex_ = str(lis_mul[1]) + " |" + taux
+            taxi = nb / (lis_mul[2] / lis_mul[3])
+            taux = "{:.2f}".format(taxi)
+            tex_ = str(lis_mul[1]) + " | " + taux
             if pos_mul[1] == max(rang_pai):
-                tex_ += "max"
+                tex_ += " max"
                 marge += 6
             cant.create_text(max(rang_pai)+marge, pos_mul[0], text=tex_, fill='green')
             (lineno(), " dico_gen/lis_mul nb", nb, lis_mul, "pos_mul", pos_mul, "max(rang_pai)", max(rang_pai))
@@ -210,8 +211,9 @@ def graphes(tab2, guide, nbr):
             # 202  dico_gen/dic_terme2 nb 34 [34, 6, 64, 34] 	 [(12, 579)]
         else:  # dic_terme3 = Terminal | dic_impairs = Position
             lis_mul, pos_mul = dic_terme3[nb], list(dic_impairs[nb][0])
-            taux = str(nb / (lis_mul[2] / lis_mul[3]))
-            tex_ = str(lis_mul[1]) + " |" + taux
+            taxi = nb / (lis_mul[2] / lis_mul[3])
+            taux = "{:.2f}".format(taxi)
+            tex_ = str(lis_mul[1]) + " | " + taux
             cant.create_text(min(rang_imp)-marge, pos_mul[0], text=tex_, fill='green')
             (lineno(), " dico_gen/lis_mul nb", nb, lis_mul, "pos_mul", pos_mul, "rang_imp", rang_imp)
             (lineno(), "\n dico_gen/dic_terme3 nb", nb, dic_terme3[nb], "\t", dic_impairs[nb])
