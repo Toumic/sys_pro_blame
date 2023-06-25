@@ -26,7 +26,7 @@ Au-delà des axes sont cités les taux des couvertures des sections..<br>
 ##### **Solutions :**
 * ###### Nombre de descentes et montées
   * ###### _Quantité de division_ :  # (Cas. Cumul. Cran)
-    * Pour un nombre pair (40) divisé par deux (2)
+    * **_Pour un nombre pair (40) divisé par deux (2)_**
       * `(40/2=20), puis (20/2=10) et (10/2=5)`. Le nombre de divisions est égal à deux (avant l'impair)
     * #### `_Quotients soustraits_` :  # (Cas. Cumul. Cran)
       * Pour ce même nombre divisé par deux.
@@ -34,10 +34,14 @@ Au-delà des axes sont cités les taux des couvertures des sections..<br>
   *  ###### _Quantité multipliée_ :  # (Cas. Cumul. Cran)
     * Pour un nombre impair (41) multiplié par trois (3). Donne toujours un résultat impair.
       * Car, _" Un nombre impair multiplié par deux, produit toujours un nombre pair."_
+      * `(1*2=2), (3*2=6), (5*2=10), (7*2=14), (9*2=18)`. Traité unitaire universel.
+      * Pour, un nombre pair divisé par deux, ayant un multiplicateur inversé de deux. `(4/2=4*2)`
+      * (impair*impair=impair), (impair*pair=pair). 
       * `(41*3=123), (123+1=124)`. Donne toujours un nombre pair, l'opération se réalise une fois.
       * #### `_Quantité additionnée_` :  # (Cas. Cumul. Cran)
         * Pour mesurer le multiple minus (3). Le 83 est un axial suivant les graduations produites.
         * `(41*3=123), (123+1=124)`. À valeur d'intervalle (83) `(41+83=124)`
-        * <br>
+        * `(124-1=123), (123/3=41)`. À même valeur d'intervalle `(83)`
+#### _
 #### * . Problème de mémoire rencontré..
 <br><br><br>top<br>

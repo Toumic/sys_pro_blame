@@ -65,8 +65,10 @@ def graphes(tab2, guide, nbr):
     cant.config(scrollregion=(0, 0, espace_nombres, long_clefs))
     cant.config(width=espace_nombres, height=long_clefs)
     cant.config(xscrollcommand=hor_bar.set, yscrollcommand=ver_bar.set)
-    # r_wid, r_hei = cant.winfo_reqwidth(), cant.winfo_reqheight()
-    # print(" r_wid ", r_wid, "  \t r_hei  ", r_hei)
+    cant.bind_all("<MouseWheel>", lambda n: molette(n))
+
+    def molette(event):
+        cant.yview_scroll(int(-1 * (event.delta / 120)), "units")
 
     '# Les trois axes verticaux'
     cant.create_line(rng_imp, 12, rng_imp, long_clefs, width=1, fill='red')
@@ -88,7 +90,7 @@ def graphes(tab2, guide, nbr):
         while n > 1:  # Délimiter la section terminale de n
             n /= 2
             sec += 1
-        n_max, n_min = 2**sec, ((2**sec)//2)+2
+        n_max, n_min = 2 ** sec, ((2 ** sec) // 2) + 2
         prime = [org, sec, n_max, n_min]
         return prime
 
@@ -173,7 +175,7 @@ def graphes(tab2, guide, nbr):
     (lineno(), "dic_pairs", dic_pairs.keys(), "\n dic_impairs", dic_impairs.keys())
     (" ", lineno(), "dic_terme2", dic_terme2.keys(), "\n dic_terme3", dic_terme3.keys())
     for k_imp in dic_impairs.keys():
-        k_pai1, k_pai2 = k_imp*3+1, k_imp*2
+        k_pai1, k_pai2 = k_imp * 3 + 1, k_imp * 2
         (lineno(), "k_imp", k_imp, dic_impairs[k_imp], "\t k_p1", k_pai1, dic_pairs[k_pai1])
         y_deb31, x_deb31 = dic_impairs[k_imp][0]
         y_fin31, x_fin31 = dic_pairs[k_pai1][0]
@@ -191,12 +193,15 @@ def graphes(tab2, guide, nbr):
             ¤ Permet d'obtenir la position du nombre transformé parmi la section terminale
                 Exemple : .. n = (nombre exemple)
                     a,b=32,18 | c=a/b=1.77 | n(32)/c=18 | n(16)/c=9 """
+    tip, tab_tip = 0, {}  # Compte le nombre de divisions par deux successives
+    top, ob = True, -1
     for dg in dico_gen.keys():
         """Légende_liste : 
             (*n-o, *f-e, *t-max, *t-min)=*nombre-original, *facteur-exposant, *terminal-maxi, *terminal-mini."""
         nb = dico_gen[dg][1]  # nb = Nombre ordonné à dico_gen
+        tab_tip[nb] = []  # Séries des nombres%2NULL
         marge = 120
-        (lineno(), "dico_gen dg", dg, dico_gen[dg], "nb", nb, "rang_pai", rang_pai, max(rang_pai))
+        (lineno(), "dico_gen DG", dg, "NB", nb)
         if nb in dic_terme2.keys():  # dic_terme2 = Terminal | dic_pairs = Position
             lis_mul, pos_mul = dic_terme2[nb], list(dic_pairs[nb][0])
             taxi = nb / (lis_mul[2] / lis_mul[3])
@@ -205,19 +210,39 @@ def graphes(tab2, guide, nbr):
             if pos_mul[1] == max(rang_pai):
                 tex_ += " max"
                 marge += 6
-            cant.create_text(max(rang_pai)+marge, pos_mul[0], text=tex_, fill='green')
+            tip += 1  # Compte le nombre de divisions par deux successives
+            if tip > 1:
+                tab_tip[ob].append(nb)
+                tab_tip.pop(nb, None)
+                (lineno(), " *tip>1* NB", nb, "OB", ob, "\t tip", tip, tab_tip[ob])
+            elif top:
+                ob = nb
+                tab_tip[nb].append(nb)
+                (lineno(), " *top* NB", nb, "OB", ob, "\t tip", tip, tab_tip[nb])
+            if (nb - 1) // 3 in dic_terme3.keys():
+                top = True
+                cant.create_text(max(rang_pai) + marge, pos_mul[0], text=tex_, fill='green')
+                (lineno(), "dic_term3.keys() NB", nb, "\t (nb-1)//3=", (nb - 1) // 3, "tex_", tex_, tab_tip)
             (lineno(), " dico_gen/lis_mul nb", nb, lis_mul, "pos_mul", pos_mul, "max(rang_pai)", max(rang_pai))
-            (lineno(), " dico_gen/dic_terme2 nb", nb, dic_terme2[nb], "\t", dic_pairs[nb])
+            print(lineno(), "dic_terme2 NB", nb, dic_terme2[nb], "\t .", dic_pairs[nb], "OB", ob, "\t tip", tab_tip[ob])
+            #
             # 202  dico_gen/dic_terme2 nb 34 [34, 6, 64, 34] 	 [(12, 579)]
         else:  # dic_terme3 = Terminal | dic_impairs = Position
+            tip = 0  # Remise à zéro du nombre de divisions par deux successives
             lis_mul, pos_mul = dic_terme3[nb], list(dic_impairs[nb][0])
             taxi = nb / (lis_mul[2] / lis_mul[3])
             taux = "{:.2f}".format(taxi)
             tex_ = str(lis_mul[1]) + " | " + taux
-            cant.create_text(min(rang_imp)-marge, pos_mul[0], text=tex_, fill='green')
+            cant.create_text(min(rang_imp) - marge, pos_mul[0], text=tex_, fill='green')
             (lineno(), " dico_gen/lis_mul nb", nb, lis_mul, "pos_mul", pos_mul, "rang_imp", rang_imp)
             (lineno(), "\n dico_gen/dic_terme3 nb", nb, dic_terme3[nb], "\t", dic_impairs[nb])
             # 209 .../... dico_gen/dic_terme3 nb 13 [13, 4, 16, 10] 	 [(60, 195)]
+    # Affichage de tab_tip
+    for k_tip in tab_tip.keys():
+        if not k_tip % 2:
+            (lineno(), "pair k_tip", k_tip, "tab_tip[]", tab_tip[k_tip], tab_tip.keys())
+        else:
+            (lineno(), "* impair k_tip", k_tip, "tab_tip[]", tab_tip[k_tip])
 
 
 def traite(nombre):
@@ -275,7 +300,7 @@ debut = Frame(root, width=300, height=100, bg='pink')
 debut.pack(side='top', ipadx=60, ipady=6)
 label = Label(debut, text='Entrez un nombre entier supérieur à 1.')
 label.pack()
-final = Frame(root, width=600, height=1000,  bg='ivory')
+final = Frame(root, width=600, height=1000, bg='ivory')
 cant = Canvas(final, bg='lightblue')
 cant.configure = ('Arial', 8)
 hor_bar = Scrollbar(final, orient=HORIZONTAL)
