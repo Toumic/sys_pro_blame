@@ -36,7 +36,7 @@ Au-delà des axes sont cités les taux des couvertures des sections..<br>
       * Car, _" Un nombre impair multiplié par deux, produit toujours un nombre pair."_
       * `(1*2=2), (3*2=6), (5*2=10), (7*2=14), (9*2=18)`. Traité unitaire universel.
       * Pour, un nombre pair divisé par deux, ayant un multiplicateur inversé de deux. `(4/2=4*2)`
-      * (impair*impair=impair), (impair*pair=pair). 
+      * (impair multiplié par impair = impair), (impair multiplié par pair = pair). 
       * `(41*3=123), (123+1=124)`. Donne toujours un nombre pair, l'opération se réalise une fois.
       * #### `_Quantité additionnée_` :  # (Cas. Cumul. Cran)
         * Pour mesurer le multiple minus (3). Le 83 est un axial suivant les graduations produites.
@@ -44,4 +44,10 @@ Au-delà des axes sont cités les taux des couvertures des sections..<br>
         * `(124-1=123), (123/3=41)`. À même valeur d'intervalle `(83)`
 #### _
 #### * . Problème de mémoire rencontré..
+Différence en pourcentage = (Différence absolue / Moyenne) x 100<br>
+Pour deux valeurs X et Y, la différence en pourcentage est la suivante :<br>
+Différence absolue = |x - y|<br>
+Moyenne = (x - y) / 2<br>
+Différence en pourcentage = (|x - y|) / ((x - y) / 2)) * 100<br>
+
 <br><br><br>top<br>

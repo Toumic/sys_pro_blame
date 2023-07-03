@@ -11,11 +11,11 @@ from typing import Callable
 lineno: Callable[[], int] = lambda: inspect.currentframe().f_back.f_lineno
 
 root = Tk()
-root.geometry("1000x1200")
+root.geometry("1000x1600")
 tab_deux = []  # Liste_itérative[n *= 2] globale.
 dic_pairs = {}  # Dictionnaire des nombres pairs avec leurs localisations.
 dic_impairs = {}  # Dictionnaire des nombres impairs avec leurs localisations.
-dic_terme2, dic_terme3 = {}, {}
+dic_terme2, dic_terme3 = {}, {}  # Dictionnaires (pair/impair) sections terminales
 
 
 def graphes(tab2, guide, nbr):
@@ -23,7 +23,7 @@ def graphes(tab2, guide, nbr):
     Va influer sur les dimensions du Canvas.
     Dictionnaire-guide.keys(index+type(pair ou pas)), guide.values(Nombre).
     Où, keys = vertical, values = horizontal."""
-    long_clefs = (len(guide.keys()) * 13)  # long_clefs = Canvas.height(hauteur visuelle).
+    long_clefs = (len(guide.keys()) * 13)  # long_clefs = Canvas.height(haut_lg visuelle).
     (lineno(), nbr, ' tab2:', tab2[0], '\nguide:', "Len ", len(guide.keys()), 'long_clefs: ', long_clefs)
     # 21 25  graphes.tab2: [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072]
     #  guide: {(1, 'impair'): 25, (2, 'pair'): 76, (3, 'pair'): 38, ,,, (23, 'pair'): 2, (24, 'impair'): 1}
@@ -131,7 +131,8 @@ def graphes(tab2, guide, nbr):
                 p2xy.append(pass_gen)
                 dic_pairs[unity].append(pass_gen)
                 (lineno(), 'original pair : (p2xy[1]):', p2xy[0])
-                cant.create_line(p1xy[0][1], p1xy[0][0], p2xy[0][1], p2xy[0][0], width=2, fill='blue')
+                cant.create_line(p1xy[0][1], p1xy[0][0], p2xy[0][1], p2xy[0][0], width=3, fill='blue',
+                                 joinstyle=ROUND, capstyle=ROUND)
                 cant.create_line(rng_pai, p1xy[0][0], p1xy[0][1], p1xy[0][0], width=2, fill='ivory', dash=(1, 1))
                 cant.create_text(x_corps, y_corps, text=unity, fill='black')
                 '# Première ligne tracée, puis p1xy[départ] devient p2xy[fin précédente)'
@@ -139,9 +140,6 @@ def graphes(tab2, guide, nbr):
                 p1xy = p2xy.copy()  # p1xy = Copie de l'ancienne fin.
                 (lineno(), 'Final pair : (p2xy) :', p2xy, '\n__ Départ pair p1xy :', p1xy)
                 p2xy.clear()
-            if unity in tab_deux:
-                cant.create_text(rng_axe - 12, p1xy[0][0], text=unity, fill='black')
-                cant.create_line(rng_axe, p1xy[0][0], rng_pai, p1xy[0][0], width=2, fill='ivory', dash=(1, 1))
         elif type_gen == 'impair':
             unity = dico_gen[ite][1]
             retour = list(terminal(unity))
@@ -164,7 +162,8 @@ def graphes(tab2, guide, nbr):
                 i2xy.append(pass_gen)
                 dic_impairs[unity].append(pass_gen)
                 (lineno(), 'original impair : (i2xy[1]):', i2xy)
-                cant.create_line(i1xy[0][1], i1xy[0][0], i2xy[0][1], i2xy[0][0], width=2, fill='red')
+                cant.create_line(i1xy[0][1], i1xy[0][0], i2xy[0][1], i2xy[0][0], width=3, fill='red',
+                                 joinstyle=ROUND, capstyle=ROUND)
                 cant.create_line(rng_imp, i1xy[0][0], i1xy[0][1], i1xy[0][0], width=2, fill='white', dash=(1, 1))
                 cant.create_text(x_corps, y_corps, text=unity, fill='black')
                 '# Première ligne tracée, puis p1xy[départ] devient p2xy[fin précédente)'
@@ -174,75 +173,133 @@ def graphes(tab2, guide, nbr):
                 i2xy.clear()
     (lineno(), "dic_pairs", dic_pairs.keys(), "\n dic_impairs", dic_impairs.keys())
     (" ", lineno(), "dic_terme2", dic_terme2.keys(), "\n dic_terme3", dic_terme3.keys())
-    for k_imp in dic_impairs.keys():
-        k_pai1, k_pai2 = k_imp * 3 + 1, k_imp * 2
-        (lineno(), "k_imp", k_imp, dic_impairs[k_imp], "\t k_p1", k_pai1, dic_pairs[k_pai1])
-        y_deb31, x_deb31 = dic_impairs[k_imp][0]
-        y_fin31, x_fin31 = dic_pairs[k_pai1][0]
-        cant.create_line(rng_pai, y_fin31, rng_imp, y_deb31, width=2, fill='green', dash=(1, 1),
-                         arrow=FIRST, arrowshape=(8, 12, 6))
-        if k_pai2 in dic_pairs.keys():  # dic_pairs positions
-            y_ava31 = dic_pairs[k_pai2][0]
-            cant.create_line(rng_imp, y_deb31, rng_pai, y_ava31[0], width=1, fill='green')
-            (lineno(), "k_pai2", k_pai2, dic_pairs[k_pai2])
-            # 184 k_pai2 34 [(12, 579)]
-        (lineno(), "k_imp", x_deb31, y_deb31, "\t k_pai1", k_pai1, x_fin31, y_fin31)
     '# Dictionnaires des caractéristiques ; *nombre-original, *facteur-exposant, *terminal-maxi, *terminal-mini.'
     """ # Traitement d'affichage des caractéristiques (texte, graphe)
         Texte = Une colonne de trois lignes (*f-e, *t-max, *t-min).
             ¤ Permet d'obtenir la position du nombre transformé parmi la section terminale
                 Exemple : .. n = (nombre exemple)
                     a,b=32,18 | c=a/b=1.77 | n(32)/c=18 | n(16)/c=9 """
-    tip, tab_tip = 0, {}  # Compte le nombre de divisions par deux successives
-    top, ob = True, -1
+    tip, tab_tip, lis_tip = 0, {}, []  # Compte le nombre de divisions par deux successives
+    tip_pai, tip_imp = [], []
+    ob = -1
+    #
+    "# cant.create_text : *facteur-exposant, *taxi = nombre/(maxi/mini)"
+    # (maxi/mini) = Quantum des minis dans un unique maxi
+    """Légende_liste :
+     dic_terme2.3 = (*n-o, *f-e, *t-max, *t-min)=*nombre-original, *facteur-exposant, *terminal-maxi, *terminal-mini.
+     tab_tip = Espace de représentation graphique combinant les clefs communes."""
     for dg in dico_gen.keys():
-        """Légende_liste : 
-            (*n-o, *f-e, *t-max, *t-min)=*nombre-original, *facteur-exposant, *terminal-maxi, *terminal-mini."""
         nb = dico_gen[dg][1]  # nb = Nombre ordonné à dico_gen
-        tab_tip[nb] = []  # Séries des nombres%2NULL
+        tab_tip[nb] = []  # Séries des nombres%2(False/True)
         marge = 120
         (lineno(), "dico_gen DG", dg, "NB", nb)
         if nb in dic_terme2.keys():  # dic_terme2 = Terminal | dic_pairs = Position
             lis_mul, pos_mul = dic_terme2[nb], list(dic_pairs[nb][0])
-            taxi = nb / (lis_mul[2] / lis_mul[3])
+            # Différence en pourcentage = (|x - y|) / ((x - y) / 2)) * 100
+            '''
+            Pour t=[34, 6, 64, 34], t[0] = Point d'orgue,
+            t[1]= Exposant de la mantisse deux _ t.max[2]= 2**Exposant _ t.min[3]= (t[2]/2)+2
+                ♦ Max/min.exemple : 64(max)/34(min) =  1.8823529411764706
+                ♦ Max/min = Intervalle régulier relatif à la section exposée.
+            Quel taux pour les autres nombres pairs de la section(64>n>34) ?
+                a,b,c,d = [34, 6, 64, 34]
+                    ♦ ((a/2)*(c/d))/c= Résultat multiplié par cent = Pourcentage
+                    ♦ (a-d)/(c-d) = Résultat multiplié par cent = Pourcentage
+                
+            '''
+            taxi = 100 * ((lis_mul[0]-(lis_mul[2]/2))/(lis_mul[2]-(lis_mul[2]/2)))
             taux = "{:.2f}".format(taxi)
-            tex_ = str(lis_mul[1]) + " | " + taux
+            tex_ = str(lis_mul[1]) + " | " + taux + "%"
             if pos_mul[1] == max(rang_pai):
                 tex_ += " max"
                 marge += 6
             tip += 1  # Compte le nombre de divisions par deux successives
             if tip > 1:
-                tab_tip[ob].append(nb)
-                tab_tip.pop(nb, None)
+                tab_tip[ob].append(nb)  # Séries des nombres%2(False=0), mémoriser commun(n/2=Entier)
+                tab_tip.pop(nb, None)  # Efface les clefs vides communes
                 (lineno(), " *tip>1* NB", nb, "OB", ob, "\t tip", tip, tab_tip[ob])
-            elif top:
-                ob = nb
-                tab_tip[nb].append(nb)
-                (lineno(), " *top* NB", nb, "OB", ob, "\t tip", tip, tab_tip[nb])
-            if (nb - 1) // 3 in dic_terme3.keys():
-                top = True
+            else:
+                tip_pai.append(nb)
+                ob = nb  # Copie la clef majeure (if nb in dic_terme2.keys())
+                tab_tip[nb].append(nb)  # Séries des nombres%2(False=0), garder la clef majeure.
+                lis_tip.append(nb)  # Liste des clefs utilisées
                 cant.create_text(max(rang_pai) + marge, pos_mul[0], text=tex_, fill='green')
-                (lineno(), "dic_term3.keys() NB", nb, "\t (nb-1)//3=", (nb - 1) // 3, "tex_", tex_, tab_tip)
-            (lineno(), " dico_gen/lis_mul nb", nb, lis_mul, "pos_mul", pos_mul, "max(rang_pai)", max(rang_pai))
-            print(lineno(), "dic_terme2 NB", nb, dic_terme2[nb], "\t .", dic_pairs[nb], "OB", ob, "\t tip", tab_tip[ob])
+                (lineno(), " *top* NB", nb, "OB", ob, "\t tip", tip, tab_tip[nb])
+            (lineno(), " lis_mul nb", nb, lis_mul, "pos_mul", pos_mul, "max(rang_pai)", max(rang_pai), lis_tip)
+            (lineno(), "d_terme2 NB", nb, dic_terme2[nb], "\t .", dic_pairs[nb], "OB", ob, "\t tip", tab_tip[ob])
             #
-            # 202  dico_gen/dic_terme2 nb 34 [34, 6, 64, 34] 	 [(12, 579)]
         else:  # dic_terme3 = Terminal | dic_impairs = Position
+            tip_imp.append(nb)
             tip = 0  # Remise à zéro du nombre de divisions par deux successives
+            tab_tip[nb].append(nb)  # Séries des nombres%2(True>0), impair non divisé par deux.
+            lis_tip.append(nb)  # Liste des clefs utilisées
             lis_mul, pos_mul = dic_terme3[nb], list(dic_impairs[nb][0])
-            taxi = nb / (lis_mul[2] / lis_mul[3])
+            taxi = 100 * ((lis_mul[0] - (lis_mul[2] / 2)) / (lis_mul[2] - (lis_mul[2] / 2)))
             taux = "{:.2f}".format(taxi)
-            tex_ = str(lis_mul[1]) + " | " + taux
+            tex_ = str(lis_mul[1]) + " | " + taux + " %"
             cant.create_text(min(rang_imp) - marge, pos_mul[0], text=tex_, fill='green')
             (lineno(), " dico_gen/lis_mul nb", nb, lis_mul, "pos_mul", pos_mul, "rang_imp", rang_imp)
             (lineno(), "\n dico_gen/dic_terme3 nb", nb, dic_terme3[nb], "\t", dic_impairs[nb])
             # 209 .../... dico_gen/dic_terme3 nb 13 [13, 4, 16, 10] 	 [(60, 195)]
-    # Affichage de tab_tip
-    for k_tip in tab_tip.keys():
-        if not k_tip % 2:
-            (lineno(), "pair k_tip", k_tip, "tab_tip[]", tab_tip[k_tip], tab_tip.keys())
+    #
+    ''' # Affichage de tab_tip
+    # dic_terme2, dic_terme3 = Dictionnaires (pairs/impairs) sections terminales |[52, 6, 64, 34]|
+    # dic_pairs, dic_impairs = Dictionnaires (pairs/impairs) avec leurs localisations |[(36, 638)]|
+    # tab_tip = Dictionnaire (pairs/impairs) démultiplications des quotients (n/2) |tip [52, 26]|'''
+    print(lineno(), "max(rang_pai)", max(rang_pai), "max(rang_imp)", max(rang_imp))
+    (lineno(), "tip_pai", tip_pai, "tip_imp", tip_imp)
+    (lineno(), "final.winfo ", final.winfo_width(), final.winfo_height())
+    (lineno(), "cant.winfo ", cant.winfo_width(), cant.winfo_height())
+    "# Arrangement des taux d'implication"
+    # Mise en ordre croissant des tips (pai|imp)
+    top_pai, top_imp = tip_pai.copy(), tip_imp.copy()
+    top_pai.sort()  # Pour améliorer l'affichage du taux (colonnes)
+    top_imp.sort()
+    log_pai, log_imp = len(top_pai), len(top_imp)  # Nombre de colonnes (pair/impair)
+    bord_p1, bord_p2, bord_i1, bord_i2 = rng_axe+3, rng_pai-3, rng_imp+3, rng_axe-3  # Axe pair et axe impair
+    print(lineno(), "\nTops", top_pai, top_imp, "\t\nTips", tip_pai, tip_imp, "\t\nLogs", log_pai, log_imp)
+    print(lineno(), "Bordures impaires ", bord_i1, bord_i2, " paires ", bord_p1, bord_p2)
+    for kp in tab_tip.keys():
+        # print(lineno())
+        if not kp % 2:  # Capter les termes, les localisations des quotients incluses
+            print(lineno())
+            '# Les localisations'
+            loc_y = dic_pairs[kp][0][0] + 6
+            haut_lg = len(tab_tip[kp]) * 11  # L'y pour l'épaisseur de la ligne
+            haut_kp = loc_y + (len(tab_tip[kp]) * 6)  # L'y pour la haut_lg de la ligne
+            cant.create_line(bord_p1, haut_kp, bord_p2, haut_kp, width=haut_lg, fill='lightsteelblue')
+            cant.create_line(bord_p1, haut_kp, bord_p1 + 6, haut_kp, width=haut_lg//2, fill='lavender')
+            print(lineno(), "d_trm2", dic_terme2[kp], "\t\td_pai", dic_pairs[kp], "\t\tpair tip", tab_tip[kp])
+            # 272 d_trm2 [34, 6, 64, 34] 		d_pai [(12, 612)] 		pair tip [34]
+            print(lineno(), "haut_lg, KP", kp, "bord_p1", bord_p1, "bord_p2", bord_p2)
+            # 262 haut_lg, KP 34 bord_p1 410 bord_p2 505
         else:
-            (lineno(), "* impair k_tip", k_tip, "tab_tip[]", tab_tip[k_tip])
+            loc_y = dic_impairs[kp][0][0] + 6
+            haut_lg = len(tab_tip[kp]) * 11  # L'y pour l'épaisseur de la ligne
+            haut_kp = loc_y + (len(tab_tip[kp]) * 6)  # L'y pour la haut_lg de la ligne
+            cant.create_line(bord_i1, haut_kp, bord_i2, haut_kp, width=haut_lg, fill='pink')
+            cant.create_line(bord_i1, haut_kp, bord_i1 + 6, haut_kp, width=haut_lg // 2, fill='mistyrose')
+            (lineno(), "d_trm3", dic_terme3[kp], "\t\td_imp", dic_impairs[kp], "\t\timpair tip", tab_tip[kp])
+            # 269 d_trm3 [17, 5, 32, 18] 		d_imp [(24, 174)] 		impair tip [17]
+            (lineno(), "haut_lg, KP", kp, "bord_i1", bord_i1, "bord_i2", bord_i2)
+            # 271 haut_lg, KP 17 bord_i1 309 bord_i2 404
+    #
+    # Tracer les pointillés connectés (n/2) (n3+1)
+    for k_imp in dic_impairs.keys():
+        k_pai1, k_pai2 = k_imp * 3 + 1, k_imp * 2
+        (lineno(), "k_imp", k_imp, dic_impairs[k_imp], "\t k_p1", k_pai1, dic_pairs[k_pai1])
+        y_deb31, x_deb31 = dic_impairs[k_imp][0]
+        y_fin31, x_fin31 = dic_pairs[k_pai1][0]
+        cant.create_line(rng_pai, y_fin31, rng_imp, y_deb31, width=3, fill='red', dash=(1, 1),
+                         arrow=FIRST, arrowshape=(8, 12, 6))
+        if k_pai2 in dic_pairs.keys():  # dic_pairs positions
+            y_ava31 = dic_pairs[k_pai2][0]
+            cant.create_line(rng_pai, y_ava31[0], rng_imp, y_deb31, width=3, fill='blue', dash=(1, 1),
+                             arrow=LAST, arrowshape=(8, 12, 6))
+            # cant.create_line(rng_imp, y_deb31, rng_pai, y_ava31[0], width=1, fill='green')
+            (lineno(), "k_pai2", k_pai2, dic_pairs[k_pai2])
+            # 184 k_pai2 34 [(12, 579)]
+        (lineno(), "k_imp", x_deb31, y_deb31, "\t k_pai1", k_pai1, x_fin31, y_fin31)
 
 
 def traite(nombre):
