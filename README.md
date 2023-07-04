@@ -44,10 +44,5 @@ Au-delà des axes sont cités les taux des couvertures des sections..<br>
         * `(124-1=123), (123/3=41)`. À même valeur d'intervalle `(83)`
 #### _
 #### * . Problème de mémoire rencontré..
-Différence en pourcentage = (Différence absolue / Moyenne) x 100<br>
-Pour deux valeurs X et Y, la différence en pourcentage est la suivante :<br>
-Différence absolue = |x - y|<br>
-Moyenne = (x - y) / 2<br>
-Différence en pourcentage = (|x - y|) / ((x - y) / 2)) * 100<br>
 
 <br><br><br>top<br>
