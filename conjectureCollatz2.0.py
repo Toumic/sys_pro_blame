@@ -194,7 +194,6 @@ def graphes(tab2, guide, nbr):
         marge = 120
         (lineno(), "dico_gen DG", dg, "NB", nb)
         if nb in dic_terme2.keys():  # dic_terme2 = Terminal | dic_pairs = Position
-            lis_mul, pos_mul = dic_terme2[nb], list(dic_pairs[nb][0])
             # Différence en pourcentage = (|x - y|) / ((x - y) / 2)) * 100
             '''
             Pour t=[34, 6, 64, 34], t[0] = Point d'orgue,
@@ -207,6 +206,7 @@ def graphes(tab2, guide, nbr):
                     ♦ (a-d)/(c-d) = Résultat multiplié par cent = Pourcentage
                 
             '''
+            lis_mul, pos_mul = dic_terme2[nb], list(dic_pairs[nb][0])
             taxi = 100 * ((lis_mul[0]-(lis_mul[2]/2))/(lis_mul[2]-(lis_mul[2]/2)))
             taux = "{:.2f}".format(taxi)
             tex_ = str(lis_mul[1]) + " | " + taux + "%"
@@ -246,7 +246,7 @@ def graphes(tab2, guide, nbr):
     # dic_terme2, dic_terme3 = Dictionnaires (pairs/impairs) sections terminales |[52, 6, 64, 34]|
     # dic_pairs, dic_impairs = Dictionnaires (pairs/impairs) avec leurs localisations |[(36, 638)]|
     # tab_tip = Dictionnaire (pairs/impairs) démultiplications des quotients (n/2) |tip [52, 26]|'''
-    print(lineno(), "max(rang_pai)", max(rang_pai), "max(rang_imp)", max(rang_imp))
+    (lineno(), "max(rang_pai)", max(rang_pai), "max(rang_imp)", max(rang_imp))
     (lineno(), "tip_pai", tip_pai, "tip_imp", tip_imp)
     (lineno(), "final.winfo ", final.winfo_width(), final.winfo_height())
     (lineno(), "cant.winfo ", cant.winfo_width(), cant.winfo_height())
@@ -257,32 +257,47 @@ def graphes(tab2, guide, nbr):
     top_imp.sort()
     log_pai, log_imp = len(top_pai), len(top_imp)  # Nombre de colonnes (pair/impair)
     bord_p1, bord_p2, bord_i1, bord_i2 = rng_axe+3, rng_pai-3, rng_imp+3, rng_axe-3  # Axe pair et axe impair
-    print(lineno(), "\nTops", top_pai, top_imp, "\t\nTips", tip_pai, tip_imp, "\t\nLogs", log_pai, log_imp)
-    print(lineno(), "Bordures impaires ", bord_i1, bord_i2, " paires ", bord_p1, bord_p2)
+    (lineno(), "\nTops", top_pai, top_imp, "\t\nTips", tip_pai, tip_imp, "\t\nLogs", log_pai, log_imp)
+    (lineno(), "Bordures impaires ", bord_i1, bord_i2, " paires ", bord_p1, bord_p2)
     for kp in tab_tip.keys():
         # print(lineno())
         if not kp % 2:  # Capter les termes, les localisations des quotients incluses
-            print(lineno())
+            (lineno())
             '# Les localisations'
-            loc_y = dic_pairs[kp][0][0] + 6
+            loc_y = dic_pairs[kp][0][0]
             haut_lg = len(tab_tip[kp]) * 11  # L'y pour l'épaisseur de la ligne
-            haut_kp = loc_y + (len(tab_tip[kp]) * 6)  # L'y pour la haut_lg de la ligne
+            haut_kp = loc_y + 6 + (len(tab_tip[kp]) * 6)  # L'y pour la haut_lg de la ligne
+            # bord_p1, bord_p2 = Définition des longueurs des lignes paires
+            lis_mul, pos_mul = dic_terme2[kp], list(dic_pairs[kp][0])
+            taxi = 100 * ((lis_mul[0] - (lis_mul[2] / 2)) / (lis_mul[2] - (lis_mul[2] / 2)))
+            esp_kp = ((bord_p2 - bord_p1)*taxi)/100
             cant.create_line(bord_p1, haut_kp, bord_p2, haut_kp, width=haut_lg, fill='lightsteelblue')
-            cant.create_line(bord_p1, haut_kp, bord_p1 + 6, haut_kp, width=haut_lg//2, fill='lavender')
-            print(lineno(), "d_trm2", dic_terme2[kp], "\t\td_pai", dic_pairs[kp], "\t\tpair tip", tab_tip[kp])
-            # 272 d_trm2 [34, 6, 64, 34] 		d_pai [(12, 612)] 		pair tip [34]
-            print(lineno(), "haut_lg, KP", kp, "bord_p1", bord_p1, "bord_p2", bord_p2)
-            # 262 haut_lg, KP 34 bord_p1 410 bord_p2 505
+            cant.create_line(bord_p1, haut_kp, bord_p1 + esp_kp, haut_kp, width=haut_lg//2, fill='lavender')
+            (lineno(), "d_trm2", dic_terme2[kp], "\t\td_pai", dic_pairs[kp], "\t\tpair tip", tab_tip[kp])
+            # 276 d_trm2 [34, 6, 64, 34] 		d_pai [(12, 612)] 		pair tip [34]
+            (lineno(), "haut_lg, KP", kp, "bord_p1", bord_p1, "bord_p2", bord_p2)
+            # 278 haut_lg, KP 34 bord_p1 410 bord_p2 505
         else:
-            loc_y = dic_impairs[kp][0][0] + 6
-            haut_lg = len(tab_tip[kp]) * 11  # L'y pour l'épaisseur de la ligne
-            haut_kp = loc_y + (len(tab_tip[kp]) * 6)  # L'y pour la haut_lg de la ligne
-            cant.create_line(bord_i1, haut_kp, bord_i2, haut_kp, width=haut_lg, fill='pink')
-            cant.create_line(bord_i1, haut_kp, bord_i1 + 6, haut_kp, width=haut_lg // 2, fill='mistyrose')
-            (lineno(), "d_trm3", dic_terme3[kp], "\t\td_imp", dic_impairs[kp], "\t\timpair tip", tab_tip[kp])
-            # 269 d_trm3 [17, 5, 32, 18] 		d_imp [(24, 174)] 		impair tip [17]
-            (lineno(), "haut_lg, KP", kp, "bord_i1", bord_i1, "bord_i2", bord_i2)
-            # 271 haut_lg, KP 17 bord_i1 309 bord_i2 404
+            ind_loc = tip_imp.index(kp)
+            (lineno(), "ind_loc", ind_loc, tip_imp[ind_loc])
+            if tip_imp[ind_loc] != 1:
+                loc_y2 = dic_impairs[tip_imp[ind_loc]][0][0]  # Localisation verticale (y) nombre en cours
+                loc_y3 = dic_impairs[tip_imp[ind_loc+1]][0][0]  # Localisation verticale (y) nombre suivant
+                (lineno(), "loc_y2", loc_y2, "loc_y3", loc_y3)
+                (lineno(), "*\tloc_y3-loc_y2=", loc_y3 - loc_y2, "\t*\t(loc_y3-loc_y2)/12=", (loc_y3 - loc_y2)/12)
+                haut_lg = ((loc_y3 - loc_y2) / 12) * 6  # L'y pour l'épaisseur de la ligne
+                haut_kp = loc_y2 + ((loc_y3 - loc_y2) / 2)  # L'y pour la haut_lg de la ligne
+                (lineno(), "H haut_kp", haut_kp, "haut_lg", haut_lg)
+                # bord_i1, bord_i2 = Définition des longueurs des lignes impaires
+                lis_mul, pos_mul = dic_terme3[kp], list(dic_impairs[kp][0])
+                taxi = 100 * ((lis_mul[0] - (lis_mul[2] / 2)) / (lis_mul[2] - (lis_mul[2] / 2)))
+                esp_kp = ((bord_i2 - bord_i1) * taxi) / 100
+                cant.create_line(bord_i1, haut_kp, bord_i2, haut_kp, width=haut_lg, fill='pink')  # haut_lg
+                cant.create_line(bord_i1, haut_kp, bord_i1 + esp_kp, haut_kp, width=haut_lg // 2, fill='mistyrose')
+            (lineno(), "  d_trm3", dic_terme3[kp], "\t\td_imp", dic_impairs[kp], "\t\timpair tip", tab_tip[kp])
+            # 297 d_trm3 [17, 5, 32, 18] 		d_imp [(24, 174)] 		impair tip [17]
+            (lineno(), "KP", kp, "bord_i1", bord_i1, "bord_i2", bord_i2)
+            # 299 KP 17 bord_i1 309 bord_i2 404
     #
     # Tracer les pointillés connectés (n/2) (n3+1)
     for k_imp in dic_impairs.keys():
