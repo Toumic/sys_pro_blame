@@ -293,7 +293,7 @@ def graphes(tab2, guide, nbr):
                 taxi = 100 * ((lis_mul[0] - (lis_mul[2] / 2)) / (lis_mul[2] - (lis_mul[2] / 2)))
                 esp_kp = ((bord_i2 - bord_i1) * taxi) / 100
                 cant.create_line(bord_i1, haut_kp, bord_i2, haut_kp, width=haut_lg, fill='pink')  # haut_lg
-                cant.create_line(bord_i1, haut_kp, bord_i1 + esp_kp, haut_kp, width=haut_lg // 2, fill='mistyrose')
+                cant.create_line(bord_i2, haut_kp, bord_i2 - esp_kp, haut_kp, width=haut_lg // 2, fill='mistyrose')
             (lineno(), "  d_trm3", dic_terme3[kp], "\t\td_imp", dic_impairs[kp], "\t\timpair tip", tab_tip[kp])
             # 297 d_trm3 [17, 5, 32, 18] 		d_imp [(24, 174)] 		impair tip [17]
             (lineno(), "KP", kp, "bord_i1", bord_i1, "bord_i2", bord_i2)
