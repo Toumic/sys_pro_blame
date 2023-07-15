@@ -13,8 +13,8 @@ lineno: Callable[[], int] = lambda: inspect.currentframe().f_back.f_lineno
 root = Tk()
 root.geometry("1000x1600")
 tab_deux = []  # Liste_itérative[n *= 2] globale.
-dic_pairs = {}  # Dictionnaire des nombres pairs avec leurs localisations.
-dic_impairs = {}  # Dictionnaire des nombres impairs avec leurs localisations.
+dic_pairs = {}  # Dictionnaire des nombres pairs pour leurs localisations.
+dic_impairs = {}  # Dictionnaire des nombres impairs pours leurs localisations.
 dic_terme2, dic_terme3 = {}, {}  # Dictionnaires (pair/impair) sections terminales
 
 
@@ -24,7 +24,7 @@ def graphes(tab2, guide, nbr):
     Dictionnaire-guide.keys(index+type(pair ou pas)), guide.values(Nombre).
     Où, keys = vertical, values = horizontal."""
     long_clefs = (len(guide.keys()) * 13)  # long_clefs = Canvas.height(haut_lg visuelle).
-    (lineno(), nbr, ' tab2:', tab2[0], '\nguide:', "Len ", len(guide.keys()), 'long_clefs: ', long_clefs)
+    (lineno(), nbr, ' tab2:', tab2, '\nguide:', "Len ", len(guide.keys()), 'long_clefs: ', long_clefs)
     # 21 25  graphes.tab2: [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072]
     #  guide: {(1, 'impair'): 25, (2, 'pair'): 76, (3, 'pair'): 38, ,,, (23, 'pair'): 2, (24, 'impair'): 1}
     # long_clefs:  150
@@ -34,11 +34,11 @@ def graphes(tab2, guide, nbr):
         if i[1] == 'impair':
             liste_impair.append(guide[i])
             dico_gen[i[0]] = (i, guide[i])
-            (lineno(), '_  impair:', guide[i], '\ti:', i)
+            (lineno(), '_  liste_impair:', guide[i], '\ti:', i)
         else:
             liste_pair.append(guide[i])
             dico_gen[i[0]] = (i, guide[i])
-            (lineno(), 'pair:', guide[i], '\ti:', i)
+            (lineno(), '_  liste_pair:', guide[i], '\ti:', i)
     '# Construction du cadre aux axes.'
     espace_nombres = (len(liste_impair) + len(liste_pair)) + (400 * 2)
     rng_axe = espace_nombres // 2
@@ -95,6 +95,11 @@ def graphes(tab2, guide, nbr):
         return prime
 
     "# Phase de finalisation et d'affichage des informations."
+    liste_gen = []
+    for ite in dico_gen.keys():
+        ote = dico_gen[ite][1]
+        liste_gen.append(ote)
+    (lineno(), "liste_gen", liste_gen)
     p1xy, p2xy = [], []  # p1xy = Point_départ_arrivée.pair
     i1xy, i2xy = [], []  # Points_départ_arrivée.impair
     dic_terme2.clear()
@@ -171,20 +176,18 @@ def graphes(tab2, guide, nbr):
                 i1xy = i2xy.copy()  # i1xy = Copie de l'ancienne fin.
                 (lineno(), '\t\t\t Final impair : (i2xy[1]):', i2xy, '\n\t\t\t Départ impair i1xy :', i1xy)
                 i2xy.clear()
-    (lineno(), "dic_pairs", dic_pairs.keys(), "\n dic_impairs", dic_impairs.keys())
+    (lineno(), "dic_pairs", dic_pairs.keys(), "\n dic_impairs", dic_impairs, "*LocalisationS*")
     (" ", lineno(), "dic_terme2", dic_terme2.keys(), "\n dic_terme3", dic_terme3.keys())
+    #
     '# Dictionnaires des caractéristiques ; *nombre-original, *facteur-exposant, *terminal-maxi, *terminal-mini.'
     """ # Traitement d'affichage des caractéristiques (texte, graphe)
         Texte = Une colonne de trois lignes (*f-e, *t-max, *t-min).
             ¤ Permet d'obtenir la position du nombre transformé parmi la section terminale
                 Exemple : .. n = (nombre exemple)
                     a,b=32,18 | c=a/b=1.77 | n(32)/c=18 | n(16)/c=9 """
-    tip, tab_tip, lis_tip = 0, {}, []  # Compte le nombre de divisions par deux successives
+    tip, tab_tip, lis_tip = 0, {}, []
     tip_pai, tip_imp = [], []
     ob = -1
-    #
-    "# cant.create_text : *facteur-exposant, *taxi = nombre/(maxi/mini)"
-    # (maxi/mini) = Quantum des minis dans un unique maxi
     """Légende_liste :
      dic_terme2.3 = (*n-o, *f-e, *t-max, *t-min)=*nombre-original, *facteur-exposant, *terminal-maxi, *terminal-mini.
      tab_tip = Espace de représentation graphique combinant les clefs communes."""
@@ -194,7 +197,6 @@ def graphes(tab2, guide, nbr):
         marge = 120
         (lineno(), "dico_gen DG", dg, "NB", nb)
         if nb in dic_terme2.keys():  # dic_terme2 = Terminal | dic_pairs = Position
-            # Différence en pourcentage = (|x - y|) / ((x - y) / 2)) * 100
             '''
             Pour t=[34, 6, 64, 34], t[0] = Point d'orgue,
             t[1]= Exposant de la mantisse deux _ t.max[2]= 2**Exposant _ t.min[3]= (t[2]/2)+2
@@ -202,9 +204,8 @@ def graphes(tab2, guide, nbr):
                 ♦ Max/min = Intervalle régulier relatif à la section exposée.
             Quel taux pour les autres nombres pairs de la section(64>n>34) ?
                 a,b,c,d = [34, 6, 64, 34]
-                    ♦ ((a/2)*(c/d))/c= Résultat multiplié par cent = Pourcentage
-                    ♦ (a-d)/(c-d) = Résultat multiplié par cent = Pourcentage
-                
+                    ♦ (c-a)/(c-d) = Résultat multiplié par cent = Pourcentage dans une section.
+                    ♦ (c-a)/(c-(c/2)) = Résultat multiplié par cent = Pourcentage entre deux sections.
             '''
             lis_mul, pos_mul = dic_terme2[nb], list(dic_pairs[nb][0])
             taxi = 100 * ((lis_mul[0]-(lis_mul[2]/2))/(lis_mul[2]-(lis_mul[2]/2)))
@@ -247,20 +248,14 @@ def graphes(tab2, guide, nbr):
     # dic_pairs, dic_impairs = Dictionnaires (pairs/impairs) avec leurs localisations |[(36, 638)]|
     # tab_tip = Dictionnaire (pairs/impairs) démultiplications des quotients (n/2) |tip [52, 26]|'''
     (lineno(), "max(rang_pai)", max(rang_pai), "max(rang_imp)", max(rang_imp))
-    (lineno(), "tip_pai", tip_pai, "tip_imp", tip_imp)
+    print(lineno(), "tip_pai", tip_pai, "tip_imp", tip_imp)
     (lineno(), "final.winfo ", final.winfo_width(), final.winfo_height())
     (lineno(), "cant.winfo ", cant.winfo_width(), cant.winfo_height())
-    "# Arrangement des taux d'implication"
-    # Mise en ordre croissant des tips (pai|imp)
-    top_pai, top_imp = tip_pai.copy(), tip_imp.copy()
-    top_pai.sort()  # Pour améliorer l'affichage du taux (colonnes)
-    top_imp.sort()
-    log_pai, log_imp = len(top_pai), len(top_imp)  # Nombre de colonnes (pair/impair)
-    bord_p1, bord_p2, bord_i1, bord_i2 = rng_axe+3, rng_pai-3, rng_imp+3, rng_axe-3  # Axe pair et axe impair
-    (lineno(), "\nTops", top_pai, top_imp, "\t\nTips", tip_pai, tip_imp, "\t\nLogs", log_pai, log_imp)
+    "# Arrangement des taux des implications en pourcentage, à partir de l'axe central."
+    bord_p1, bord_p2, bord_i1, bord_i2 = rng_axe+1, rng_pai-1, rng_imp+1, rng_axe  # Axe pair et axe impair
     (lineno(), "Bordures impaires ", bord_i1, bord_i2, " paires ", bord_p1, bord_p2)
     for kp in tab_tip.keys():
-        # print(lineno())
+        (lineno(), kp, tab_tip[kp])
         if not kp % 2:  # Capter les termes, les localisations des quotients incluses
             (lineno())
             '# Les localisations'
@@ -300,6 +295,7 @@ def graphes(tab2, guide, nbr):
             # 299 KP 17 bord_i1 309 bord_i2 404
     #
     # Tracer les pointillés connectés (n/2) (n3+1)
+    '''Flèches pointillées d'un départ nombre1 vers arrivée fléchée à nombre2.'''
     for k_imp in dic_impairs.keys():
         k_pai1, k_pai2 = k_imp * 3 + 1, k_imp * 2
         (lineno(), "k_imp", k_imp, dic_impairs[k_imp], "\t k_p1", k_pai1, dic_pairs[k_pai1])
@@ -311,10 +307,28 @@ def graphes(tab2, guide, nbr):
             y_ava31 = dic_pairs[k_pai2][0]
             cant.create_line(rng_pai, y_ava31[0], rng_imp, y_deb31, width=3, fill='blue', dash=(1, 1),
                              arrow=LAST, arrowshape=(8, 12, 6))
-            # cant.create_line(rng_imp, y_deb31, rng_pai, y_ava31[0], width=1, fill='green')
             (lineno(), "k_pai2", k_pai2, dic_pairs[k_pai2])
             # 184 k_pai2 34 [(12, 579)]
         (lineno(), "k_imp", x_deb31, y_deb31, "\t k_pai1", k_pai1, x_fin31, y_fin31)
+    #
+    (lineno(), "  dic_terme2", dic_terme2.keys(), "  dic_terme3", dic_terme3.keys(), " Mantisse. Exposant. Section.")
+    print(lineno(), "  liste_pair", liste_pair, "  liste_impair", liste_impair, " Mantisse. Exposant. Section.")
+    print(lineno(), "Écriture des paramètres choisis pour leurs utilités")
+    # Écriture des paramètres choisis pour leurs utilités
+    ''' On commence par le nombre qui est à l'origine des traitements [entre (n/2) et (3*n+1)].
+        1- nombre_origine = ?
+        2- mantisse, exposant, section = 2, ?, ?  # section = mantisse exposée par l'exposant.
+        3- nombre_listes = len(liste_pair) + len(liste_impair)  # listes_(pair impair)
+        4- parcours_ligne = ?  # Le relief horizontal suivant la séquence des sections.
+        5- zone_basse = ?  # Les listes des sections verticalement listées.
+    '''
+    print(lineno(), "1- nombre_origine = nbr", nbr, "liste_gen", liste_gen)
+    ''' # Mantisse, exposant, section : Dans dic_terme2 et dic_terme3. Accessible via liste_générique_nbr's
+        # dic_terme2[34] = [34, 6, 64, 34] et, dic_terme3[17] = [17, 5, 32, 18]'''
+    print(lineno(), "2- mantisse, exposant, section = 2, ?, ?")  # dic_terme2.3[unity]
+    print(lineno(), "3- nombre_listes = len(liste_pair) + len(liste_impair)")
+    print(lineno(), "4- parcours_ligne = ?")
+    print(lineno(), "5- zone_basse = ?")
 
 
 def traite(nombre):
@@ -322,6 +336,7 @@ def traite(nombre):
     '# Série : Cumulative des nombres précédents multipliés par deux [2, 4, 8, 16, 32, 64, 128,,,]'
     pro_deux, nbr_org = 2, nombre
     tab_deux.clear()
+    tab_deux.append(pro_deux)
     for d in range(2, 33, 2):
         pro_deux *= 2  # pro_deux : Change à chaque fois.
         tab_deux.append(pro_deux)
