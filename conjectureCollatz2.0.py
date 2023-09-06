@@ -363,6 +363,7 @@ def graphes(tab2, guide, nbr):
     "# Réglage des polices"
     f_titre = ("Times", 11)  # Police des rubriques
     f_ruban = ("Courier", 10)  # Police des descriptions
+    c_ovale = ("Times", 14)  # Police des rubriques
     (lineno(), "^^^^^^^^ f_titre", f_titre, "\t |", f_ruban)
 
     # RECTANGLE SERVICE ******************* DÉBUT STATISTIQUES ************************ RECTANGLE SERVICE
@@ -584,7 +585,7 @@ def graphes(tab2, guide, nbr):
     (lineno(), "\ndic_taux:", dic_taux, "\ndico_gen :", dico_gen)
 
     # Lignes circulaires des rayons et section
-    six0 = 60
+    six0, sax0 = 60, []
     (lineno(), "six0:", six0)
     # 588 six0: 60
     for dtk, dtv in dic_taux.items():
@@ -597,30 +598,24 @@ def graphes(tab2, guide, nbr):
         x6 = ray * math.cos(math.radians(ang)) + centre0[0]
         y6 = ray * math.sin(math.radians(ang)) + centre0[1]
         xy6 = x6, y6
-        print(lineno(), "xy6:", xy6, "dtk:", dtk, "dtk % 6:", dtk % 6)
+        if y6 > centre0[1]:  # centre0[1] = 534
+            pos0 = (210 - (y6 - centre0[1]))
+            (lineno(), "if y6:", y6, "pos0:", pos0, "dtk6:", dtk6)
+        else:
+            pos0 = ((centre0[1] - y6) - 210)
+            (lineno(), "else y6:", y6, "pos0:", pos0, "dtk6:", dtk6)
+        (lineno(), "xy6:", xy6, "dtk:", dtk, "dtk % 6:", dtk % 6)
         if dtk6 == 6:
             dtk6 = 0
         cant.create_line(centre0, xy6, fill=color6[dtk6], width=3)
         cant.create_line(xy6, dic_axe[dtk], fill=color6[dtk6], width=1)
-    """
-    import math
-    def pointA(rayon, angle, centre0=(0, 0)):
-        '''Cette fonction a pour objectif de produire
-            les coordonnées cartésiennes (x) et (y) du pointA
-            situé au bout du rayon et opposé à son début au centre0 du cercle.'''
-        x = rayon * math.cos(math.radians(angle)) + centre0[0]
-        y = rayon * math.sin(math.radians(angle)) + centre0[1]
-        return (x, y)
-    # Exemple d'utilisation de la fonction pointA
-    rayon = 5  # Longueur du rayon*
-    angle = 30  # En degrés
-    centre0 = (2, 3)
-    soluce = pointA(rayon, angle, centre0)
-    print(f"Les coordonnées du point A sont: {soluce}")
-    """
+        if dtk6 not in sax0:
+            cant.create_line(xy6, (xy6[0], xy6[1] + pos0), fill=color6[dtk6], width=1)
+            cant.create_text(xy6[0], xy6[1] + (pos0 + 6), text=str(dtk6), fill='black', font=c_ovale)
+            sax0.append(dtk6)
     #
 
-    print()
+    print(c_ovale)
     print(lineno(), " Positions max_paires   max_dro", max_dro, "max-min", (max_dro - min_gau))
     print(lineno(), " Positions max impaires min_gau", min_gau)
     print(lineno(), " Positions bas_impaires lig_hau", lig_hau)
