@@ -566,7 +566,7 @@ def graphes(tab2, guide, nbr):
                 (lineno(), "T1:", test, "\t secte.déb:", sec1xy, "secte.fin:", sec2xy, "T2:", dic_taux[nbr_gen])
                 # 554 T1: 354.375 	 secte.déb: (527, 674) secte.fin: (527, 744) T2: ('6.25', 6)
                 cant.create_line((rol_gx1, rol_gy1), sec2xy, width=1, fill="blue")  # Section entière
-                cant.create_line(sec1xy, sec2xy, width=3, fill="blue")  # Section locale
+                cant.create_line(sec1xy, sec2xy, width=3, fill="blue", capstyle=ROUND)  # Section locale
                 cant.create_line(test[0] - 5, test[1], test[0] + 5, test[1], width=3, fill="black")  # Section test
                 (lineno(), '   pair nbr_gen :', nbr_gen, "test :", test)
             else:
@@ -576,7 +576,7 @@ def graphes(tab2, guide, nbr):
                 (lineno(), "T1:", test, "\t secte.déb:", sec1xy, "secte.fin:", sec2xy, "T2:", dic_taux[nbr_gen])
                 # 564 T1: (558, 459.625) 	 secte.déb: (558, 464) secte.fin: (558, 394) T2: ('6.25', 5)
                 cant.create_line((rol_gx1, rol_dy1), sec2xy, width=1, fill="yellow")  # Section entière
-                cant.create_line(sec1xy, sec2xy, width=3, fill="yellow")  # Section locale
+                cant.create_line(sec1xy, sec2xy, width=3, fill="yellow", capstyle=ROUND)  # Section locale
                 cant.create_line(test[0] - 5, test[1], test[0] + 5, test[1], width=3, fill="black")  # Section test
                 (lineno(), '   impair nbr_gen :', nbr_gen)
             (lineno(), "nbr_gen :", nbr_gen, "sec_deb", sec_deb, "sec_fin", sec_fin)
@@ -647,7 +647,7 @@ def graphes(tab2, guide, nbr):
                 # Tracer les rayons
                 cant.create_line(centre0, xy6, fill=color6[dtk6], width=3)
                 # Liaison rayon et barre
-                cant.create_line(xy6, dic_axe[dtk], fill=color6[dtk6], width=2, dash=(1, 2))
+                cant.create_line(xy6, dic_axe[dtk], fill=color6[dtk6], width=2, dash=(1, 1))
                 (lineno(), "in v2_choix dtk6:", dtk6, "v2_choix.values:", v2_choix[0])
             if dtk6 not in sax0:  # La ligne d'indication du numéro de rayon.
                 cant.create_line(xy6, (xy6[0], xy6[1] + pos0), fill=color6[dtk6], width=1)
