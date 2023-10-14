@@ -24,6 +24,7 @@ def graphes(tab2, guide, nbr):
     Va influer sur les dimensions du Canvas.
     Dictionnaire-guide, keys (index+type (pair ou pas)), guide.values (Nombre).
     Où, keys = vertical, values = horizontal."""
+    v_choix, v2_choix = {}, {}  # Déclaration préliminaire
     long_clefs = (len(guide.keys()) * 13)  # long_clefs = Canvas.height(haut_lg visuelle).
     long_guide = (len(guide.keys()) * 12)  # long_guide = Profondeur des axes
     (lineno(), nbr, ' tab2:', tab2, '\nguide:', "Len ", len(guide.keys()), 'long_clefs: ', long_clefs)
@@ -308,7 +309,7 @@ def graphes(tab2, guide, nbr):
     '''Flèches pointillées d'un départ nombre1 vers arrivée fléchée à nombre2.'''
     for k_imp in dic_impairs.keys():
         k_pai1, k_pai2 = k_imp * 3 + 1, k_imp * 2
-        (lineno(), "k_imp", k_imp, dic_impairs[k_imp], "\t k_p1", k_pai1, dic_pairs[k_pai1])
+        (lineno(), "k_imp", k_imp, dic_impairs[k_imp], "\t k_p1", k_pai1, "dic_pairs[k_pai1]")
         y_deb31, x_deb31 = dic_impairs[k_imp][0]
         y_fin31, x_fin31 = dic_pairs[k_pai1][0]
         cant.create_line(rng_pai, y_fin31, rng_imp, y_deb31, width=3, fill='red', dash=(1, 1),
@@ -358,7 +359,7 @@ def graphes(tab2, guide, nbr):
     max_dro = (dic_pairs[max(liste_pair)][0][1]) + 10  # Marge droite = +120
     lig_hau = (dic_impairs[1][0][0]) + 15
     neo_len = long_clefs + 600
-    print(lineno(), "\t\t\tParamètres Fenêtre long_clefs", long_clefs, "neo_len", neo_len)
+    (lineno(), "\t\t\tParamètres Fenêtre long_clefs", long_clefs, "neo_len", neo_len)
     #
     "# Réglage des polices"
     f_titre = ("Times", 11)  # Police des rubriques
@@ -381,14 +382,14 @@ def graphes(tab2, guide, nbr):
     t_lis = "Totalité des nombres"  # Libellé
     h_txt += 12  # Position coordonnée horizontale du Libellé
     h_lib = h_txt  # Position coordonnée horizontale du Libellé
-    print(lineno(), "POSE horizontale", "Libellé \t\th_lib : ", h_lib, "|POSE verticale ***********v_txt:", v_txt)
+    (lineno(), "POSE horizontale", "Libellé \t\th_lib : ", h_lib, "|POSE verticale ***********v_txt:", v_txt)
     cant.create_text(h_txt, v_txt, text=t_lis, fill='black', font=f_titre)
     t_tot1, t_tot2 = len(liste_pair), len(liste_impair)  # Totalité des longueurs des listes (pair/impair)
     t_tot = str(t_tot1 + t_tot2)  # Totalité des longueurs des listes (pair/impair)
     (lineno(), "______ t_tot:", t_tot, "\t t_tot1.2:", t_tot1, t_tot2)
     h_txt += 102  # Position coordonnée horizontale du total (pairs + impairs)
     h_tot = h_txt  # Position coordonnée horizontale du total (pairs + impairs)
-    print(lineno(), "POSE horizontale", "Total \t\t\th_tot : ", h_tot, "|POSE verticale ***********v_txt:", v_txt)
+    (lineno(), "POSE horizontale", "Total \t\t\th_tot : ", h_tot, "|POSE verticale ***********v_txt:", v_txt)
     t_lib = "Section originale"
     cant.create_rectangle(min_gau - 120, v_txt + 18, min_gau + 12, v_txt + 32, fill='linen', width=0)
     cant.create_text(h_lib, v_txt + 24, text=t_lib, fill='black', font=f_titre)
@@ -396,7 +397,7 @@ def graphes(tab2, guide, nbr):
     loc_aux, loc_bas = "Qµ.pairs : ", "Qµ.impairs : "  # Définitions des rubriques
     qua_tic = (((max_dro + 120) - h_txt) // 2) + h_txt  # Position horizontale du grand texte centré
     h_big = qua_tic
-    print(lineno(), "POSE horizontale", "Grand-texte  \th_big :\t", h_big, "|POSE verticale ***********v_txt:", v_txt)
+    (lineno(), "POSE horizontale", "Grand-texte  \th_big :\t", h_big, "|POSE verticale ***********v_txt:", v_txt)
     big_txt = loc_aux + str(t_tot1) + '  _(&)_  ' + loc_bas + str(t_tot2)
     cant.create_text(qua_tic, v_txt, text=big_txt, fill='navy', font=f_ruban, justify="center")
     (lineno(), "*** pose:", pose, type(pose), "\t h_txt:", h_txt, "v_txt:", v_txt, "\n")
@@ -449,13 +450,12 @@ def graphes(tab2, guide, nbr):
     (lineno(), "n3_tot", n3_tot, "s_tab", s_tab, "len(str())", len(str(s_tab)))
     # Fin du choix utilisateur original, et début des périodes globales.
 
-    """# Écriture du reste trilogique information
-    en,     périodes globales (voir lignes n°343 à 346)"""
+    """# Écriture du reste trilogique information en, périodes globales (voir lignes n°343 à 346)"""
     # Pour l'ensemble des périodes le dictionnaire dic_taux renseigne : Nombres. Pourcentages. Exposants.
     # Pour les sections entières[tip_pai/tip_imp] ou communes[liste_pair/liste_impair] des nombres :
     ("\n☺", lineno(), "\nen,     périodes globales (voir lignes n°343 à 346)")
-    print(lineno(), "Les sections communes", "\tliste_pair", liste_pair, "\n  liste_impair", liste_impair)
-    print(lineno(), "Les sections entières", "\ttip_pai", tip_pai, "tip_imp", tip_imp)
+    (lineno(), "Les sections communes", "\tliste_pair", liste_pair, "\n  liste_impair", liste_impair)
+    (lineno(), "Les sections entières", "\ttip_pai", tip_pai, "tip_imp", tip_imp)
     ("\n", lineno(), """ Emplacement du graphisme.
     La façade est circulaire, elle est composée de cercles, un cercle égale une section (entière ou commune).
     Priorité aux sections entières ayant un périmètre élargi, afin d'y superposer les sections communes.
@@ -467,23 +467,27 @@ def graphes(tab2, guide, nbr):
         va1, va2 = val
         if va2 not in lis_sec:
             lis_sec.append(va2)
-    print(lineno(), "lis_sec :", lis_sec)
+    (lineno(), "lis_sec :", lis_sec)
     # 469 lis_sec : [6, 5, 4, 3, 2, 1]
     # Le cadrage des graphismes
     o_color, color6 = "grey", ["navy", "yellow", "blue", "red", "violet", "orange"]
     axe_x, axe_y = ((max_dro - min_gau) // 2) + min_gau - 360, (((neo_len - 14) - v_txt) // 2) + v_txt
     centre0 = axe_x, axe_y  # Les coordonnées du point central des sections
     centre1 = axe_x + 210, axe_y  # Les coordonnées du point central des sections
-    cant.create_rectangle(min_gau, v_txt, max_dro, neo_len - 14, width=1, outline="grey")
+    cant.create_rectangle(min_gau, v_txt, max_dro, neo_len - 14, width=1, outline="red")
     cant.create_line(h_lib, v_txt, h_big, v_txt, width=30, fill='pink', capstyle=ROUND)
+    cant.create_line(max_dro - 33, v_txt, max_dro + 33, v_txt, width=30, fill='slateblue', capstyle=ROUND)
+    cant.create_text(max_dro, v_txt, text="Pairs", fill='black', font=f_titre)
     label0 = "Les graphismes : Les cercles (base%6) et les barres (2D)"
     cant.create_text(h_tot + (h_tot // 2), v_txt, text=label0, fill='black', font=f_titre)
     cant.create_oval(centre0[0] - 210, centre0[1] - 210, centre0[0] + 210, centre0[1] + 210, width=0, fill=o_color)
     cant.create_line(centre1[0] - 210, centre1[1], max_dro, centre1[1], width=432, fill=o_color, capstyle=ROUND)
+    cant.create_line(max_dro - 33, neo_len - 14, max_dro + 33, neo_len - 14, width=30, fill="gold", capstyle=ROUND)
+    cant.create_text(max_dro, neo_len - 14, text="Impairs", fill='black', font=f_titre)
     # cant.create_oval(centre1[0] - 210, centre1[1] - 210, centre1[0] + 210, centre1[1] + 210, width=1, fill="ivory")
-    print("************CERCLES********SECTIONS*********BARRES***********NOMBRES***********", lineno())
-    print("\t", lineno(), "centre0_cercles :", centre0, "Maximum = 210")  # Point central des cercles-sections
-    print("\t", lineno(), "centre1_barres :", centre1, "Maximum = 210")  # Point central des cercles-sections
+    ("************CERCLES********SECTIONS*********BARRES***********NOMBRES***********", lineno())
+    ("\t", lineno(), "centre0_cercles :", centre0, "Maximum = 210")  # Point central des cercles-sections
+    ("\t", lineno(), "centre1_barres :", centre1, "Maximum = 210")  # Point central des cercles-sections
 
     "# Cercles : Ø 420 | Rayon 210 |"
     int_sec = 210 / len(lis_sec)  # int_sec = Espace de déploiement des cercles-sections - Type float
@@ -492,7 +496,7 @@ def graphes(tab2, guide, nbr):
     tab_sec = [xy * int_sec for xy in range(1, len(lis_sec) + 1)]
     tab_sec2 = [xy * int_sec2 for xy in range(1, int(t_tot) + 1)]
     tab_sec.reverse()
-    print(lineno(), "Cercles tab_sec :", tab_sec, "\n")  # Rayons des cercles des nombres
+    (lineno(), "Cercles tab_sec :", tab_sec, "\n")  # Rayons des cercles des nombres
     # 486 Cercles tab_sec : [210.0, 183.75, 157.5, 131.25, 105.0, 78.75, 52.5, 26.25]
 
     "# Sections (barres) : Axes (y, x) (début et fin) | max_dro[bord_droit]"
@@ -508,8 +512,8 @@ def graphes(tab2, guide, nbr):
     "# Trace les cercles-sections et les barres-nombres, en pointillés."
     for ts in tab_sec2:
         esp_c += 1
-        if esp_c-1 < len(tab_sec):
-            ms = tab_sec[esp_c-1]
+        if esp_c - 1 < len(tab_sec):
+            ms = tab_sec[esp_c - 1]
             (lineno(), "esp_c :", esp_c, dico_gen[esp_c][1])
             # Lignes circulaires[rayons]
             cant.create_oval(centre0[0] - ms, centre0[1] - ms, centre0[0] + ms, centre0[1] + ms,
@@ -527,8 +531,8 @@ def graphes(tab2, guide, nbr):
             n_long = len(n_pos)  # Nombre de fois - divisible par deux
             n_ind = dic_taux[nbr_gen][1]  # Section d'entrée maximale
             n_x, n_y = esp_x * (n_long - 1), esp_y1 * (n_long - 1)
-            point1, point2 = (rol_gx1, rol_gy1), (rol_gx1, rol_gy1+(n_ind*esp_y1))
-            point3, point4 = (rol_gx1 + n_x, rol_gy1+(n_ind*esp_y1) - n_y), (rol_gx1 + n_x, rol_gy1)
+            point1, point2 = (rol_gx1, rol_gy1), (rol_gx1, rol_gy1 + (n_ind * esp_y1))
+            point3, point4 = (rol_gx1 + n_x, rol_gy1 + (n_ind * esp_y1) - n_y), (rol_gx1 + n_x, rol_gy1)
             cant.create_line(point1, point2, fill="purple", width=1, joinstyle=ROUND, capstyle=ROUND)
             cant.create_line(point2, point3, fill="purple", width=1, joinstyle=ROUND, capstyle=ROUND)
             cant.create_line(point3, point4, fill="purple", width=1, joinstyle=ROUND, capstyle=ROUND)
@@ -536,7 +540,7 @@ def graphes(tab2, guide, nbr):
             cant.create_rectangle(point1, point3, fill="purple")
             (lineno(), "nbr_gen :", nbr_gen, "n_ind :", n_ind, "\t tab_tip :", tab_tip[nbr_gen], dic_taux[nbr_gen])
             (lineno(), "* Majeure esp_x :", esp_x, "\t esp_y1 :", esp_y1, "\t rol_gxy :", rol_gx1, rol_gy1)
-            (lineno(), "n_long:", n_long, n_x, "x|y", n_y, "rol", rol_gx1, rol_gx1+n_x, rol_gy1, rol_gy1+n_y)
+            (lineno(), "n_long:", n_long, n_x, "x|y", n_y, "rol", rol_gx1, rol_gx1 + n_x, rol_gy1, rol_gy1 + n_y)
             (lineno(), " ")
 
         # Lignes horizontales[sections]
@@ -556,7 +560,7 @@ def graphes(tab2, guide, nbr):
             sec_deb, sec_fin = dic_taux[nbr_gen][1] - 1, dic_taux[nbr_gen][1]
             (lineno(), "nbr_gen :", nbr_gen, "sec_deb", sec_deb, "sec_fin", sec_fin)
             if dico_gen[esp_c][0][1] == 'pair':
-                sec1xy, sec2xy = (rol_gx1, rol_gy1+(esp_y1*sec_deb)), (rol_gx1, rol_gy1+(esp_y1*sec_fin))  # Coord xy
+                sec1xy, sec2xy = ((rol_gx1, rol_gy1 + (esp_y1 * sec_deb)), (rol_gx1, rol_gy1 + (esp_y1 * sec_fin)))
                 test = sec1xy[0], ((esp_y1 * float(dic_taux[nbr_gen][0])) / 100) + sec1xy[1]
                 dic_axe[nbr_gen] = test
                 (lineno(), "T1:", test, "\t secte.déb:", sec1xy, "secte.fin:", sec2xy, "T2:", dic_taux[nbr_gen])
@@ -566,7 +570,7 @@ def graphes(tab2, guide, nbr):
                 cant.create_line(test[0] - 5, test[1], test[0] + 5, test[1], width=3, fill="black")  # Section test
                 (lineno(), '   pair nbr_gen :', nbr_gen, "test :", test)
             else:
-                sec1xy, sec2xy = (rol_gx1, rol_dy1-(esp_y1*sec_deb)), (rol_gx1, rol_dy1-(esp_y1*sec_fin))  # Coord
+                sec1xy, sec2xy = (rol_gx1, rol_dy1 - (esp_y1 * sec_deb)), (rol_gx1, rol_dy1 - (esp_y1 * sec_fin))
                 test = sec1xy[0], sec1xy[1] - ((esp_y1 * float(dic_taux[nbr_gen][0])) / 100)
                 dic_axe[nbr_gen] = test
                 (lineno(), "T1:", test, "\t secte.déb:", sec1xy, "secte.fin:", sec2xy, "T2:", dic_taux[nbr_gen])
@@ -577,48 +581,101 @@ def graphes(tab2, guide, nbr):
                 (lineno(), '   impair nbr_gen :', nbr_gen)
             (lineno(), "nbr_gen :", nbr_gen, "sec_deb", sec_deb, "sec_fin", sec_fin)
         rol_gx1 += esp_x
-    print(lineno(), "\n Les barres dic_axe :", dic_axe)
+    (lineno(), "\n Les barres dic_axe :", dic_axe)
     (lineno(), "Verticales Barres : \tesp_x :", esp_x, "\tesp_y :", esp_y, "\tt_tot :", t_tot)
     (lineno(), "Horizontales Barres : \tesp_y1 :", esp_y1, "\tlis_sec :", len(lis_sec))
     (lineno(), "Intervalles Barres : \tesp_x*int :", esp_x * int(t_tot), "\tesp_y*int :", esp_y * int(t_tot))
     (lineno(), "Intervalles Barres : \tespace x :", bord_dx - bord_gx, "\tbords y :", bord_dy - bord_gy)
     (lineno(), "\ndic_taux:", dic_taux, "\ndico_gen :", dico_gen)
 
-    # Lignes circulaires des rayons et section
+    "# Lignes circulaires des rayons et section"
     six0, sax0 = 60, []
-    (lineno(), "six0:", six0)
-    # 588 six0: 60
-    for dtk, dtv in dic_taux.items():
-        dtk6 = dtk % 6
-        if dtk6 == 0:
-            dtk6 = 6
-        ray = ((int_sec * float(dtv[0])) // 100) + (int_sec * (int(dtv[1]) - 1))
-        ang = dtk6 * six0
-        (lineno(), "ray:", ray, "ang:", ang, "dtk:", dtk, "dtv:", dtv, "centre0:", centre0, "int_sec:", int_sec)
-        x6 = ray * math.cos(math.radians(ang)) + centre0[0]
-        y6 = ray * math.sin(math.radians(ang)) + centre0[1]
-        xy6 = x6, y6
-        if y6 > centre0[1]:  # centre0[1] = 534
-            pos0 = (210 - (y6 - centre0[1]))
-            (lineno(), "if y6:", y6, "pos0:", pos0, "dtk6:", dtk6)
+    # Construction du dictionnaire
+    dic_six = {}
+    tab_six = list(dic_taux.keys())
+    for kts in tab_six:
+        kts6 = kts % 6
+        if kts6 not in dic_six.keys():
+            dic_six[kts6] = [kts]
+            (lineno(), "IF KTS:", kts, "kts6", kts6, dic_six[kts6])
         else:
-            pos0 = ((centre0[1] - y6) - 210)
-            (lineno(), "else y6:", y6, "pos0:", pos0, "dtk6:", dtk6)
-        (lineno(), "xy6:", xy6, "dtk:", dtk, "dtk % 6:", dtk % 6)
-        if dtk6 == 6:
-            dtk6 = 0
-        cant.create_line(centre0, xy6, fill=color6[dtk6], width=3)
-        cant.create_line(xy6, dic_axe[dtk], fill=color6[dtk6], width=1)
-        if dtk6 not in sax0:
-            cant.create_line(xy6, (xy6[0], xy6[1] + pos0), fill=color6[dtk6], width=1)
-            cant.create_text(xy6[0], xy6[1] + (pos0 + 6), text=str(dtk6), fill='black', font=c_ovale)
-            sax0.append(dtk6)
+            dic_six[kts6].append(kts)
+            (lineno(), "\tEL KTS:", kts, "kts6", kts6, dic_six[kts6])
+    box_6 = list(dic_six.keys())
     #
+    # Créer un cadre pour y placer les sélections
+    # 1. le constructeur
+    (lineno(), "##################################################################################")
 
-    print(c_ovale)
-    print(lineno(), " Positions max_paires   max_dro", max_dro, "max-min", (max_dro - min_gau))
-    print(lineno(), " Positions max impaires min_gau", min_gau)
-    print(lineno(), " Positions bas_impaires lig_hau", lig_hau)
+    def selection():
+        """Permet de capturer les choix de l'utilisateur"""
+        # nonlocal v_choix
+        i_choix = t_choix.curselection()  # Si i_choix = Index table t_choix = (1, 2, 3)
+        v_choix[0] = list(t_choix.get(iv) for iv in i_choix)  # Alors v_choix = Valeur v_choix = [5, 2, 1]
+        if not i_choix:
+            v_choix[0] = box_6.copy()  # Quand il n'y a pas de choix tout est choisi
+            (lineno(), "\n*** sélection_if v_choix:", v_choix, "\n*** i_choix:", i_choix)
+        (lineno(), "\n*** sélection v_choix:", type(v_choix[0][0]), "\n***")
+        window.destroy()
+        return v_choix
+
+    def initialise():
+        nonlocal v2_choix
+        v2_choix = selection()
+        (lineno(), "\n*** sélection v2_choix:", v2_choix, "\n***")
+        for dtk, dtv in dic_taux.items():
+            dtk6 = dtk % 6
+            if dtk6 == 0:
+                dtk6 = 6
+            ray = ((int_sec * float(dtv[0])) // 100) + (int_sec * (int(dtv[1]) - 1))
+            ang = dtk6 * six0
+            (lineno(), "ray:", ray, "ang:", ang, "dtk:", dtk, "dtv:", dtv, "centre0:", centre0)
+            x6 = ray * math.cos(math.radians(ang)) + centre0[0]
+            y6 = ray * math.sin(math.radians(ang)) + centre0[1]
+            xy6 = x6, y6
+            if y6 > centre0[1]:  # centre0[1] = 534
+                pos0 = (210 - (y6 - centre0[1]))
+                (lineno(), "if y6:", y6, "pos0:", pos0, "dtk6:", dtk6)
+            else:
+                pos0 = ((centre0[1] - y6) - 210)
+                (lineno(), "else y6:", y6, "pos0:", pos0, "dtk6:", dtk6)
+            if dtk6 == 6:
+                dtk6 = 0
+            "# Intersection (rayon, barre)"
+            (lineno(), "xy6:", xy6, "dtk:", dtk, "dtk6:", dtk6, type(dtk6), "v2_choix.val:", v2_choix[0])
+            if dtk6 in v2_choix[0]:
+                # Tracer les rayons
+                cant.create_line(centre0, xy6, fill=color6[dtk6], width=3)
+                # Liaison rayon et barre
+                cant.create_line(xy6, dic_axe[dtk], fill=color6[dtk6], width=2, dash=(1, 2))
+                (lineno(), "in v2_choix dtk6:", dtk6, "v2_choix.values:", v2_choix[0])
+            if dtk6 not in sax0:  # La ligne d'indication du numéro de rayon.
+                cant.create_line(xy6, (xy6[0], xy6[1] + pos0), fill=color6[dtk6], width=1)
+                cant.create_text(xy6[0], xy6[1] + (pos0 + 6), text=str(dtk6), fill='black', font=c_ovale)
+                sax0.append(dtk6)
+                (lineno(), "sax0:", sax0)
+        (lineno(), "sax0:", sax0, "v2_choix:", v2_choix)
+        #
+
+    window = Toplevel()
+    window.geometry('200x150')
+    t_choix = Listbox(window, selectmode="multiple")
+    t_choix.pack(expand=YES, fill="both")
+    for each_item in range(len(box_6)):
+        t_choix.insert(END, box_6[each_item])
+        t_choix.itemconfig(each_item, bg="yellow" if each_item % 2 == 0 else "cyan")
+
+    c_bouton = Button(window, text="Valider", command=initialise)
+    c_bouton.place(x="30", y="120")
+    (lineno(), "\n*** dic_six:", dic_six, "\n*** box_6:", box_6, "\n***")
+    # État du window_Protocole
+    (lineno(), "v2_choix:", v2_choix)
+    window.protocol("WM_DELETE_WINDOW", initialise)
+
+    (lineno(), "\n Fonte", c_ovale, "sax0:", sax0)
+    (lineno(), " Positions max_paires   max_dro", max_dro, "max-min", (max_dro - min_gau))
+    (lineno(), " Positions max impaires min_gau", min_gau)
+    (lineno(), " Positions bas_impaires lig_hau", lig_hau)
 
 
 def traite(nombre):
@@ -661,11 +718,11 @@ def control():
     """Fonction de conversion (str > int)"""
     try:
         nom_bis = int(nombril.get())
-        if isinstance(nom_bis, int) and nom_bis > 0:
+        if isinstance(nom_bis, int) and nom_bis > 2:
             (lineno(), 'control.try.nom_bis:', nom_bis, 'type:', type(nom_bis))
             traite(nom_bis)
     except ValueError:
-        nombril.insert(0, '2')
+        nombril.insert(0, '3')
 
 
 '# Entrée utilisateur ☺'
@@ -675,7 +732,7 @@ def control():
 nombre_max = 0
 debut = Frame(root, width=300, height=100, bg='pink')
 debut.pack(side='top', ipadx=60, ipady=6)
-label = Label(debut, text='Entrez un nombre entier supérieur à 1')
+label = Label(debut, text='Entrez un nombre entier supérieur à 2')
 label.pack()
 final = Frame(root, width=1000, height=1000, bg='ivory')
 cant = Canvas(final, bg='lightblue')
