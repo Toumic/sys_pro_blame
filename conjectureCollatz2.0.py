@@ -22,7 +22,7 @@ dic_terme2, dic_terme3 = {}, {}  # Dictionnaires (pair/impair) sections terminal
 def graphes(tab2, guide, nbr):
     """ Mise en situation matricielle.
     Va influer sur les dimensions du Canvas.
-    Dictionnaire-guide, keys (index+type (pair ou pas)), guide.values (Nombre).
+    Dictionnaire-guide, keys (index+type (pair ou pas)), guide_values (Nombre).
     Où, keys = vertical, values = horizontal."""
     v_choix, v2_choix = {}, {}  # Déclaration préliminaire
     long_clefs = (len(guide.keys()) * 13)  # long_clefs = Canvas.height(haut_lg visuelle).
@@ -91,7 +91,7 @@ def graphes(tab2, guide, nbr):
         """Détermine la section paire du nombre n.
             Soit, valeur maxi = 2**sec. Et mini = ((2**sec)//2)+2"""
         sec, org = 0, n
-        while n > 1:  # Délimiter la section terminale de n
+        while n > 1:  # Délimiter la section terminale de 'n'
             n /= 2
             sec += 1
         n_max, n_min = 2 ** sec, ((2 ** sec) // 2) + 2
@@ -111,7 +111,7 @@ def graphes(tab2, guide, nbr):
     dic_pairs.clear()
     dic_impairs.clear()
     for ite in dico_gen.keys():
-        type_gen = dico_gen[ite][0][1]  # Partie de la clé où est écrit le type du nombre.
+        type_gen = dico_gen[ite][0][1]  # Partie de la clé, où il est écrit le type du nombre.
         haut_gen, case_gen = ite, dico_gen[ite][1]  # haut_gen = Vertical, case_gen = Horizontal.
         haut_gen *= 12  # Intervalle vertical entre les nombres.
         ("_*", lineno(), 'haut_gen (vertical):', haut_gen, 'case_gen (horizontal):', case_gen, dico_gen[ite][0])
@@ -214,7 +214,7 @@ def graphes(tab2, guide, nbr):
             lis_mul, pos_mul = dic_terme2[nb], list(dic_pairs[nb][0])
             taxi = 100 * ((lis_mul[0] - (lis_mul[2] / 2)) / (lis_mul[2] - (lis_mul[2] / 2)))
             taux = "{:.2f}".format(taxi)
-            dic_taux[nb] = taux, dic_terme2[nb][1]
+            dic_taux[nb] = [taux, dic_terme2[nb][1]]
             (lineno(), "\ndic_taux:", dic_taux, "\n")
             tex_ = str(lis_mul[1]) + " | " + taux + " %"
             (lineno(), "texte :", tex_, "dic_terme2[nb]:", dic_terme2[nb])
@@ -245,7 +245,7 @@ def graphes(tab2, guide, nbr):
             taxi = 100 * ((lis_mul[0] - (lis_mul[2] / 2)) / (lis_mul[2] - (lis_mul[2] / 2)))
             taux = "{:.2f}".format(taxi)
             if nb != 1:
-                dic_taux[nb] = taux, dic_terme3[nb][1]
+                dic_taux[nb] = [taux, dic_terme3[nb][1]]
             (lineno(), "\ndic_taux:", dic_taux, "\n")
             tex_ = str(lis_mul[1]) + " | " + taux + " %"
             cant.create_text(min(rang_imp) - marge, pos_mul[0], text=tex_, fill='green')
@@ -271,8 +271,8 @@ def graphes(tab2, guide, nbr):
             (lineno())
             '# Les localisations'
             loc_y = dic_pairs[kp][0][0]
-            haut_lg = len(tab_tip[kp]) * 11  # L'y pour l'épaisseur de la ligne
-            haut_kp = loc_y + 6 + (len(tab_tip[kp]) * 6)  # L'y pour la haut_lg de la ligne
+            haut_lg = len(tab_tip[kp]) * 11  # Le 'y' pour l'épaisseur de la ligne
+            haut_kp = loc_y + 6 + (len(tab_tip[kp]) * 6)  # Le 'y' pour la haut_lg de la ligne
             # bord_p1, bord_p2 = Définition des longueurs des lignes paires
             lis_mul, pos_mul = dic_terme2[kp], list(dic_pairs[kp][0])
             taxi = 100 * ((lis_mul[0] - (lis_mul[2] / 2)) / (lis_mul[2] - (lis_mul[2] / 2)))
@@ -281,8 +281,8 @@ def graphes(tab2, guide, nbr):
             cant.create_line(bord_p1, haut_kp, bord_p1 + esp_kp, haut_kp, width=haut_lg // 2, fill='lavender')
             (lineno(), "d_trm2", dic_terme2[kp], "\t\td_pai", dic_pairs[kp], "\t\tpair tip", tab_tip[kp])
             # 276 d_trm2 [34, 6, 64, 34] 		d_pai [(12, 612)] 		pair tip [34]
-            (lineno(), "haut_lg, KP", kp, "bord_p1", bord_p1, "bord_p2", bord_p2)
-            # 278 haut_lg, KP 34 bord_p1 410 bord_p2 505
+            (lineno(), "haut_lg, KP:", kp, "bord_p1:", bord_p1, "bord_p2:", bord_p2)
+            # 278 haut_lg, KP: 34 bord_p1: 410 bord_p2: 505.
         else:
             ind_loc = tip_imp.index(kp)
             (lineno(), "ind_loc", ind_loc, tip_imp[ind_loc])
@@ -291,8 +291,8 @@ def graphes(tab2, guide, nbr):
                 loc_y3 = dic_impairs[tip_imp[ind_loc + 1]][0][0]  # Localisation verticale (y) nombre suivant
                 (lineno(), "loc_y2", loc_y2, "loc_y3", loc_y3)
                 (lineno(), "*\tloc_y3-loc_y2=", loc_y3 - loc_y2, "\t*\t(loc_y3-loc_y2)/12=", (loc_y3 - loc_y2) / 12)
-                haut_lg = ((loc_y3 - loc_y2) / 12) * 6  # L'y pour l'épaisseur de la ligne
-                haut_kp = loc_y2 + ((loc_y3 - loc_y2) / 2)  # L'y pour la haut_lg de la ligne
+                haut_lg = ((loc_y3 - loc_y2) / 12) * 6  # Le 'y' pour l'épaisseur de la ligne
+                haut_kp = loc_y2 + ((loc_y3 - loc_y2) / 2)  # Le 'y' pour la haut_lg de la ligne
                 (lineno(), "H haut_kp", haut_kp, "haut_lg", haut_lg)
                 # bord_i1, bord_i2 = Définition des longueurs des lignes impaires
                 lis_mul, pos_mul = dic_terme3[kp], list(dic_impairs[kp][0])
@@ -321,7 +321,7 @@ def graphes(tab2, guide, nbr):
             (lineno(), "k_pai2", k_pai2, dic_pairs[k_pai2])
             # 184 k_pai2 34 [(12, 579)]
         (lineno(), "k_imp", x_deb31, y_deb31, "\t k_pai1", k_pai1, x_fin31, y_fin31)
-    # Révisions...
+    # Révisions…
     (lineno(), "  dic_terme2", dic_terme2.keys(), "  dic_terme3", dic_terme3.keys(), " Mantisse. Exposant. Section.")
     (lineno(), "tip_pai", tip_pai, "tip_imp", tip_imp)
     (lineno(), "  liste_pair", liste_pair, "\n  liste_impair", liste_impair, " Mantisse. Exposant. Section.")
@@ -448,7 +448,7 @@ def graphes(tab2, guide, nbr):
     cant.create_text(h_tot, v_txt + 6, text=n3_tot, fill='black', font=f_titre, justify="center")
     cant.create_text(h_big, v_txt + 14, text=h3_big, fill='navy', font=f_ruban, justify="center")
     (lineno(), "n3_tot", n3_tot, "s_tab", s_tab, "len(str())", len(str(s_tab)))
-    # Fin du choix utilisateur original, et début des périodes globales.
+    # La fin du choix de l'utilisateur original est début des périodes globales.
 
     """# Écriture du reste trilogique information en, périodes globales (voir lignes n°343 à 346)"""
     # Pour l'ensemble des périodes le dictionnaire dic_taux renseigne : Nombres. Pourcentages. Exposants.
@@ -613,7 +613,7 @@ def graphes(tab2, guide, nbr):
         i_choix = t_choix.curselection()  # Si i_choix = Index table t_choix = (1, 2, 3)
         v_choix[0] = list(t_choix.get(iv) for iv in i_choix)  # Alors v_choix = Valeur v_choix = [5, 2, 1]
         if not i_choix:
-            v_choix[0] = box_6.copy()  # Quand il n'y a pas de choix tout est choisi
+            v_choix[0] = box_6.copy()  # Quand il n'y a pas de choix, c'est que tout est choisi.
             (lineno(), "\n*** sélection_if v_choix:", v_choix, "\n*** i_choix:", i_choix)
         (lineno(), "\n*** sélection v_choix:", type(v_choix[0][0]), "\n***")
         window.destroy()
