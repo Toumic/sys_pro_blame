@@ -12,7 +12,8 @@ from typing import Callable
 lineno: Callable[[], int] = lambda: inspect.currentframe().f_back.f_lineno
 
 root = Tk()
-root.geometry("1600x1600")
+root.geometry("1300x1000+300+15")
+root.title("Conjecture Collatz")
 tab_deux = []  # Liste_itérative[n *= 2] globale.
 dic_pairs = {}  # Dictionnaire des nombres pairs pour leurs localisations.
 dic_impairs = {}  # Dictionnaire des nombres impairs pours leurs localisations.
@@ -24,7 +25,7 @@ def graphes(tab2, guide, nbr):
     Va influer sur les dimensions du Canvas.
     Dictionnaire-guide, keys (index+type (pair ou pas)), guide_values (Nombre).
     Où, keys = vertical, values = horizontal."""
-    v_choix, v2_choix = {}, {}  # Déclaration préliminaire
+    v_choix = {}  # Déclaration préliminaire
     long_clefs = (len(guide.keys()) * 13)  # long_clefs = Canvas.height(haut_lg visuelle).
     long_guide = (len(guide.keys()) * 12)  # long_guide = Profondeur des axes
     (lineno(), nbr, ' tab2:', tab2, '\nguide:', "Len ", len(guide.keys()), 'long_clefs: ', long_clefs)
@@ -602,26 +603,22 @@ def graphes(tab2, guide, nbr):
             dic_six[kts6].append(kts)
             (lineno(), "\tEL KTS:", kts, "kts6", kts6, dic_six[kts6])
     box_6 = list(dic_six.keys())
+    (lineno(), "box_6 :", box_6)
+    # 605 box_6 : [2, 4]
     #
     # Créer un cadre pour y placer les sélections
-    # 1. le constructeur
+    # 1. Le constructeur
     (lineno(), "##################################################################################")
 
-    def selection():
-        """Permet de capturer les choix de l'utilisateur"""
-        # nonlocal v_choix
+    def initialise():
         i_choix = t_choix.curselection()  # Si i_choix = Index table t_choix = (1, 2, 3)
         v_choix[0] = list(t_choix.get(iv) for iv in i_choix)  # Alors v_choix = Valeur v_choix = [5, 2, 1]
         if not i_choix:
             v_choix[0] = box_6.copy()  # Quand il n'y a pas de choix, c'est que tout est choisi.
             (lineno(), "\n*** sélection_if v_choix:", v_choix, "\n*** i_choix:", i_choix)
         (lineno(), "\n*** sélection v_choix:", type(v_choix[0][0]), "\n***")
+        v2_choix = v_choix
         window.destroy()
-        return v_choix
-
-    def initialise():
-        nonlocal v2_choix
-        v2_choix = selection()
         (lineno(), "\n*** sélection v2_choix:", v2_choix, "\n***")
         for dtk, dtv in dic_taux.items():
             dtk6 = dtk % 6
@@ -655,21 +652,27 @@ def graphes(tab2, guide, nbr):
                 sax0.append(dtk6)
                 (lineno(), "sax0:", sax0)
         (lineno(), "sax0:", sax0, "v2_choix:", v2_choix)
-        #
+        # ...
 
-    window = Toplevel()
-    window.geometry('200x150')
+    for child in root.winfo_children():  # Pour supprimer les fenêtres déjà ouvertes.
+        if isinstance(child, Toplevel):
+            if child.winfo_exists():
+                (lineno(), "graphes_window : ", child)
+                child.destroy()
+    window = Toplevel(root)
+    window.geometry('300x150')
+    window.title("Choix liste")
     t_choix = Listbox(window, selectmode="multiple")
     t_choix.pack(expand=YES, fill="both")
+    c_bouton = Button(window, text="Valider", command=initialise)
+    c_bouton.place(x="30", y="120")
     for each_item in range(len(box_6)):
         t_choix.insert(END, box_6[each_item])
         t_choix.itemconfig(each_item, bg="yellow" if each_item % 2 == 0 else "cyan")
-
-    c_bouton = Button(window, text="Valider", command=initialise)
-    c_bouton.place(x="30", y="120")
+    t_choix.bind('<<ListboxSelect>>', lambda event: window.after(100, c_bouton.focus_set))
+    c_bouton.bind("<Return>", lambda event: c_bouton.invoke())
     (lineno(), "\n*** dic_six:", dic_six, "\n*** box_6:", box_6, "\n***")
     # État du window_Protocole
-    (lineno(), "v2_choix:", v2_choix)
     window.protocol("WM_DELETE_WINDOW", initialise)
 
     (lineno(), "\n Fonte", c_ovale, "sax0:", sax0)
