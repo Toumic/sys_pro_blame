@@ -603,7 +603,7 @@ def graphes(tab2, guide, nbr):
             dic_six[kts6].append(kts)
             (lineno(), "\tEL KTS:", kts, "kts6", kts6, dic_six[kts6])
     box_6 = list(dic_six.keys())
-    (lineno(), "box_6 :", box_6)
+    print(lineno(), "box_6 :", box_6)
     # 605 box_6 : [2, 4]
     #
     # Créer un cadre pour y placer les sélections
@@ -671,6 +671,7 @@ def graphes(tab2, guide, nbr):
         t_choix.itemconfig(each_item, bg="yellow" if each_item % 2 == 0 else "cyan")
     t_choix.bind('<<ListboxSelect>>', lambda event: window.after(100, c_bouton.focus_set))
     c_bouton.bind("<Return>", lambda event: c_bouton.invoke())
+    c_bouton.focus_set()
     (lineno(), "\n*** dic_six:", dic_six, "\n*** box_6:", box_6, "\n***")
     # État du window_Protocole
     window.protocol("WM_DELETE_WINDOW", initialise)
